@@ -39,6 +39,7 @@ sysinfo.txt
 *.log
 *.lib
 *.sbr
+UserSettings/
 AssemblyInfo.cs
 # Anything else
 Thumbs.db
