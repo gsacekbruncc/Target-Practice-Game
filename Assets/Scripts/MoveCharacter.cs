@@ -7,6 +7,7 @@ public class MoveCharacter : MonoBehaviour
     public float moveSpeed = 5;
     public float jumpForce = 10;
     Rigidbody rb;
+    bool isJumpable;
 
 
     // Start is called before the first frame update
@@ -25,11 +26,26 @@ public class MoveCharacter : MonoBehaviour
 
         transform.Translate(move, Space.Self);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && isJumpable)
         {
             Jump();
         }
 
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Jumpable"))
+        {
+            isJumpable = true;
+        }
+    }
+    void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Jumpable"))
+        {
+            isJumpable = false;
+        }
     }
 
     void Jump()
