@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LookCharacter : MonoBehaviour
 {
@@ -8,11 +9,12 @@ public class LookCharacter : MonoBehaviour
     public float lookSpeed = 1f;
     float pitch = 0f;
     public Transform playerBody;
+    public Slider sensitivity;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        sensitivity.onValueChanged.AddListener(OnSensitivityChanged);
     }
 
     // Update is called once per frame
@@ -27,5 +29,10 @@ public class LookCharacter : MonoBehaviour
         pitch = Mathf.Clamp(pitch, -89f, 89f);
         transform.localEulerAngles = Vector3.right * pitch;
         
+    }
+
+    public void OnSensitivityChanged(float sensitivity)
+    {
+        lookSpeed = sensitivity;
     }
 }
