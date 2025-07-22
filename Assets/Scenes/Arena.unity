@@ -5426,7 +5426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6815e6ec785444f911de8c0b512c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 2
+  interval: 1
   zPosition: 5
   startDelay: 5
   roundTime: 1e+18
