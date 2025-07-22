@@ -25,7 +25,7 @@ public class ShootTarget : MonoBehaviour
     void shoot()
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
+        //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
 
         if(Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
