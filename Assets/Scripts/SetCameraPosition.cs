@@ -11,7 +11,7 @@ public class SetCameraPosition : MonoBehaviour
     {
         float cameraX = p.transform.position.x;
         float cameraZ = p.transform.position.z;
-        float cameraY = p.transform.position.y;
+        float cameraY = p.transform.position.y + .01f;
 
         c.transform.position = new Vector3(cameraX, cameraY, cameraZ);
     }

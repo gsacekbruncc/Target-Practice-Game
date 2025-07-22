@@ -36,7 +36,7 @@ public class ShootPlayer : MonoBehaviour
             var dist = Vector3.Distance(player.transform.position, transform.position);
             var direction = (player.transform.position - transform.position).normalized;
             var newPosition = new Vector3(dist, tp.y, tp.z);
-            ls.y = dist - .5f;
+            ls.y = dist;
             
             //newLaser.transform.position = newPosition;
             newLaser.transform.localScale = ls;
@@ -47,7 +47,7 @@ public class ShootPlayer : MonoBehaviour
         if(time <= 0)
         {
             Ray ray = new Ray(newLaser.transform.position, newLaser.transform.up);
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 100);
+            //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 100);
             if(Physics.Raycast(ray, out var hit))
             {
                 if(hit.collider.gameObject.name == "Player")
@@ -56,5 +56,10 @@ public class ShootPlayer : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        Destroy(newLaser);
     }
 }
