@@ -5429,7 +5429,7 @@ MonoBehaviour:
   interval: 2
   zPosition: 5
   startDelay: 5
-  roundTime: 30
+  roundTime: 1e+18
   liveTime: 5
   target: {fileID: 1529802783}
 --- !u!1 &1701993183
