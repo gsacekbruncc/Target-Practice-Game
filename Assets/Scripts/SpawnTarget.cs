@@ -5,10 +5,10 @@ using UnityEngine;
 public class SpawnTarget : MonoBehaviour
 {
     public float interval;
-    public float liveTime;
     public float zPosition;
     public float startDelay;
     public float roundTime;
+    public float liveTime;
     public GameObject target;
 
 
@@ -38,7 +38,14 @@ public class SpawnTarget : MonoBehaviour
         var x = Random.Range(-10f, 10f);
         var y = Random.Range(target.transform.localScale.y, 5f);
         var position = new Vector3(x, y, zPosition);
-
-        Instantiate(target, position, Quaternion.identity);
+        
+        var newTarget = Instantiate(target, position, Quaternion.identity);
+        
+        var mt = newTarget.AddComponent<MoveTarget>(); 
+        mt.dx = 2;
+        mt.speed = 2;
+        
+        var dTime = newTarget.AddComponent<DespawnTarget>();
+        dTime.liveTime = liveTime;
     }
 }
