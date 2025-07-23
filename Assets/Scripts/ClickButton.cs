@@ -9,6 +9,7 @@ public class ClickButton : MonoBehaviour
     GameObject button;
 
     public GameObject subMenu;
+    public int id;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class ClickButton : MonoBehaviour
             if(Physics.Raycast(ray, out var hit) && hit.collider.gameObject == button)
             {
                 subMenu.SetActive(true);
-
+                var gameHandler = GameObject.Find("Game Handler");
             }
         }
     }
