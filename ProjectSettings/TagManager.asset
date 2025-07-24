@@ -9,6 +9,7 @@ TagManager:
   - Slider
   - Button
   - ApplyCrosshair
+  - TutorialTarget
   layers:
   - Default
   - TransparentFX

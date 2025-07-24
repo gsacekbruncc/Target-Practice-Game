@@ -33,6 +33,10 @@ public class ShootTarget : MonoBehaviour
             {
                 Destroy(hit.collider.gameObject);
             }
+            if(hit.collider.gameObject.CompareTag("TutorialTarget"))
+            {
+                hit.collider.gameObject.SetActive(false);
+            }
         }
     }
     
