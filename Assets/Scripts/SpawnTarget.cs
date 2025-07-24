@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class SpawnTarget : MonoBehaviour
 {
@@ -9,12 +10,17 @@ public class SpawnTarget : MonoBehaviour
     public float startDelay;
     public float roundTime;
     public float liveTime;
+    public float shootTime;
     public GameObject target;
     public GameObject[] tutorialTargets;
 
-    bool inTutorial;
-    int tutorialStage;
+    List<GameObject> liveTargets = new List<GameObject>();
     bool inRound;
+    bool inTutorial;
+    bool inFreePlay;
+
+    int tutorialStage;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,46 +34,107 @@ public class SpawnTarget : MonoBehaviour
     void Update()
     {
 
+        if(!inTutorial)
+        {
+            for(int i = 0; i < tutorialTargets.Length; i++)
+            {
+                if(tutorialTargets[i].activeInHierarchy == true)
+                {
+                    tutorialTargets[i].SetActive(false);
+                } 
+            }
+            tutorialStage = 0;
+        }
         if(inTutorial)
         {
-            if(tutorialStage == 0 && tutorialTargets[0].activeInHierarchy == false && tutorialTargets[1].activeInHierarchy == false && tutorialTargets[2].activeInHierarchy == false)
+            inFreePlay = false;
+            //Stage 1
+            if(tutorialStage == 0 && tutorialTargets[0].activeInHierarchy == false)
             {
                 tutorialTargets[0].SetActive(true);
                 tutorialStage = 1;             
             }
-            if(tutorialStage == 1 && tutorialTargets[0].activeInHierarchy == false && tutorialTargets[2].activeInHierarchy == false)
+            //Stage 2
+            if(tutorialStage == 1 && tutorialTargets[0].activeInHierarchy == false 
+            && tutorialTargets[1].activeInHierarchy == false
+            && tutorialTargets[2].activeInHierarchy == false)
             {
                 tutorialTargets[1].SetActive(true);
+                tutorialTargets[2].SetActive(true);
                 tutorialStage = 2;
             }
-            if(tutorialStage == 2 && tutorialTargets[1].activeInHierarchy == false && tutorialTargets[0].activeInHierarchy == false)
+            //Stage 3
+            if(tutorialStage == 2 && tutorialTargets[0].activeInHierarchy == false 
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false
+            && tutorialTargets[3].activeInHierarchy == false)
             {
-                tutorialTargets[2].SetActive(true);
+                tutorialTargets[3].SetActive(true);
                 tutorialStage = 3;
             }
-            if(tutorialStage == 3)
+            //Stage 4
+            if(tutorialStage == 3 && tutorialTargets[0].activeInHierarchy == false 
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false 
+            && tutorialTargets[3].activeInHierarchy == false
+            && tutorialTargets[4].activeInHierarchy == false)
+            {
+                tutorialTargets[4].SetActive(true);
+                tutorialStage = 4;
+            }
+            //Stage 5
+            if(tutorialStage == 4 && tutorialTargets[0].activeInHierarchy == false 
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false 
+            && tutorialTargets[3].activeInHierarchy == false
+            && tutorialTargets[4].activeInHierarchy == false
+            && tutorialTargets[5].activeInHierarchy == false)
+            {
+                tutorialTargets[5].SetActive(true);
+                tutorialStage = 5;
+            }
+            //End Tutorial
+            if(tutorialStage == 5 && tutorialTargets[0].activeInHierarchy == false
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false 
+            && tutorialTargets[3].activeInHierarchy == false
+            && tutorialTargets[4].activeInHierarchy == false
+            && tutorialTargets[5].activeInHierarchy == false)
             {
                 inTutorial = false;
             }
         }
-        else if(inRound)
+        if(!inRound)
         {
-            if(roundTime > 0)
+            CancelInvoke(nameof(Spawn));
+            inTutorial = false;
+            inFreePlay = false;
+            foreach(GameObject target in liveTargets)
             {
-                roundTime -= Time.deltaTime;
-            }
-            else
-            {  
-                //CancelInvoke() stops all invokes
-                CancelInvoke(nameof(Spawn));
+                Destroy(target);
             }
         }
+
+        // else if(inRound || inFreePlay)
+        // {
+        //     if(roundTime > 0)
+        //     {
+        //         roundTime -= Time.deltaTime;
+        //     }
+        //     else
+        //     {  
+        //         //CancelInvoke() stops all invokes
+        //         CancelInvoke(nameof(Spawn));
+        //     }
+        // }
+        // else
+        // {
+        //     CancelInvoke(nameof(Spawn));
+        // }
     }
 
     void Spawn()
     {
-        //var x = Random.Range(-10f, 10f);
-        //var y = Random.Range(target.transform.localScale.y, 5f);
         var position = new Vector3(Random.Range(-10f, 10f), Random.Range(target.transform.localScale.y, 5f), zPosition);
         var type = Random.Range(0, 3);
         
@@ -85,8 +152,19 @@ public class SpawnTarget : MonoBehaviour
         if(type == 2)
         {
             var st = newTarget.AddComponent<ShootPlayer>();
-            st.time = 5;
+            st.time = shootTime;
         }  
+        liveTargets.Add(newTarget);
+    }
+
+    public void setInRound(bool status)
+    {   
+        inRound = status;
+    }
+    
+    public void removeLiveTarget(GameObject target)
+    {
+        liveTargets.Remove(target);
     }
 
     void StartRound()
@@ -94,9 +172,23 @@ public class SpawnTarget : MonoBehaviour
         InvokeRepeating(nameof(Spawn), startDelay, interval);
         inRound = true;
     }
-
     public void StartTutorial()
     {
+        CancelInvoke(nameof(Spawn));
+        foreach(GameObject target in liveTargets)
+        {
+            Destroy(target);
+        }
         inTutorial = true;
+        inRound = true;
+        inFreePlay = false;
+    }
+    public void StartFreePlay()
+    {
+        CancelInvoke(nameof(Spawn));
+        InvokeRepeating(nameof(Spawn), startDelay, interval);
+        inFreePlay = true;
+        inRound = true;
+        inTutorial = false;
     }
 }

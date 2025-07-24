@@ -8,14 +8,14 @@ public class GameModeManager : MonoBehaviour
     public GameObject[] gameModes;
     public GameObject startTarget;
 
-    int gameMode;
+    //int gameMode;
     Camera cam;
     //bool roundStarted;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameMode = 0;
+        //gameMode = 0;
         cam = Camera.main;
     }
 
@@ -33,6 +33,10 @@ public class GameModeManager : MonoBehaviour
                 if(modeButton == gameModes[0])
                 {
                     GetComponent<SpawnTarget>().StartTutorial();
+                }
+                if(modeButton == gameModes[5])
+                {
+                    GetComponent<SpawnTarget>().StartFreePlay();
                 }
             }
         }
