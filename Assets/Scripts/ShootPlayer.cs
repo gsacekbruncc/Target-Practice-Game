@@ -52,7 +52,8 @@ public class ShootPlayer : MonoBehaviour
             {
                 if(hit.collider.gameObject.name == "Player")
                 {
-                    Debug.Log("Hit player!");
+                    var gameHandler = GameObject.Find("Game Handler");
+                    gameHandler.GetComponent<SpawnTarget>().setInRound(false);
                 }
             }
         }
@@ -66,5 +67,6 @@ public class ShootPlayer : MonoBehaviour
     void OnDisable()
     {
         Destroy(newLaser);
+        laserSpawned = false;
     }
 }

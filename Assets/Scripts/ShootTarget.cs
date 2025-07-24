@@ -29,14 +29,17 @@ public class ShootTarget : MonoBehaviour
 
         if(Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
-            if(hit.collider.gameObject.CompareTag("Target"))
+            var target = hit.collider.gameObject;
+            if(target.CompareTag("TutorialTarget"))
             {
-                Destroy(hit.collider.gameObject);
+                target.SetActive(false);
             }
-            if(hit.collider.gameObject.CompareTag("TutorialTarget"))
+            else if(target.CompareTag("Target"))
             {
-                hit.collider.gameObject.SetActive(false);
+                GameObject.Find("Game Handler").GetComponent<SpawnTarget>().removeLiveTarget(target);
+                Destroy(target);
             }
+            
         }
     }
     
