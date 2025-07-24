@@ -9,7 +9,9 @@ public class MenuManager : MonoBehaviour
     GameObject button;
     
     public GameObject[] buttons;
+
     public GameObject quitButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,25 +29,25 @@ public class MenuManager : MonoBehaviour
             if(hitInfo && buttons.Contains(hit.collider.gameObject))
             {   
                 var currButton = hit.collider.gameObject;
-                GameObject currSubMenu = currButton.GetComponent<ClickButton>().subMenu;
-                int currId = currButton.GetComponent<ClickButton>().id;
+                GameObject currSubMenu = currButton.GetComponent<ButtonInfo>().subMenu;
+                int currId = currButton.GetComponent<ButtonInfo>().id;
                 
                 if(currId == 1)
                 {
                     currSubMenu.SetActive(true);
                 }
-                else if(buttons[0].GetComponent<ClickButton>().subMenu.activeInHierarchy)
+                else if(buttons[0].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
                 {
-                    buttons[0].GetComponent<ClickButton>().subMenu.SetActive(false);
+                    buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
 
                 if(currId == 2)
                 {
                     currSubMenu.SetActive(true);
                 }
-                else if(buttons[1].GetComponent<ClickButton>().subMenu.activeInHierarchy)
+                else if(buttons[1].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
                 {
-                    buttons[1].GetComponent<ClickButton>().subMenu.SetActive(false);
+                    buttons[1].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
 
                 if(currId == 3)
