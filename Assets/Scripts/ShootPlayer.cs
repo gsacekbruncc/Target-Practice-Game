@@ -44,7 +44,7 @@ public class ShootPlayer : MonoBehaviour
             //transform.rotation = Quaternion.LookRotation(direction);
         }
 
-        if(time <= 0)
+        if(time <= 0 && gameObject.CompareTag("Target"))
         {
             Ray ray = new Ray(newLaser.transform.position, newLaser.transform.up);
             //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 100);
@@ -59,6 +59,11 @@ public class ShootPlayer : MonoBehaviour
     }
 
     void OnDestroy()
+    {
+        Destroy(newLaser);
+    }
+
+    void OnDisable()
     {
         Destroy(newLaser);
     }
