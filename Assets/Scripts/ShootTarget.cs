@@ -7,10 +7,12 @@ public class ShootTarget : MonoBehaviour
 
     public float rayDistance = 100;
 
+    GameObject gameHandler;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameHandler = GameObject.Find("Game Handler");
     }
 
     // Update is called once per frame
@@ -18,29 +20,27 @@ public class ShootTarget : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            shoot();
-        }
-    }
+            gameHandler.GetComponent<LevelManager>().IncShotsFired();
 
-    void shoot()
-    {
-        Ray ray = new Ray(transform.position, transform.forward);
-        //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
+            Ray ray = new Ray(transform.position, transform.forward);
+            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
 
-        if(Physics.Raycast(ray, out RaycastHit hit, rayDistance))
-        {
-            var target = hit.collider.gameObject;
-            if(target.CompareTag("TutorialTarget"))
+            if(Physics.Raycast(ray, out RaycastHit hit, rayDistance))
             {
-                target.SetActive(false);
+                var target = hit.collider.gameObject;
+                if(target.CompareTag("TutorialTarget"))
+                {
+                    target.SetActive(false);
+                }
+                else if(target.CompareTag("Target"))
+                {
+                    gameHandler.GetComponent<LevelManager>().IncTTTH(target.GetComponent<TargetInfo>().GetTTH());
+                    gameHandler.GetComponent<LevelManager>().IncScore(target.GetComponent<TargetInfo>().GetPoints());
+                    gameHandler.GetComponent<LevelManager>().IncTargetsHit();
+                    gameHandler.GetComponent<LevelManager>().RemoveLiveTarget(target);
+                    Destroy(target);
+                }
             }
-            else if(target.CompareTag("Target"))
-            {
-                GameObject.Find("Game Handler").GetComponent<SpawnTarget>().removeLiveTarget(target);
-                Destroy(target);
-            }
-            
         }
-    }
-    
+    }   
 }
