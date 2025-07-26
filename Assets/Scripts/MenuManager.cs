@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
     GameObject button;
     
     public GameObject[] buttons;
-
+    public GameObject[] gameModes;
     public GameObject quitButton;
 
 
@@ -55,7 +55,23 @@ public class MenuManager : MonoBehaviour
                     Application.Quit();
                 }
             }
-            else if(hitInfo && hit.collider.gameObject == quitButton)
+            if(hitInfo && gameModes.Contains(hit.collider.gameObject))
+            {
+                var modeButton = hit.collider.gameObject;
+                if(modeButton == gameModes[0])
+                {
+                    GetComponent<LevelManager>().StartTutorial();
+                }
+                if(modeButton == gameModes[1])
+                {
+                    GetComponent<LevelManager>().StartEasy();
+                }
+                if(modeButton == gameModes[5])
+                {
+                    GetComponent<LevelManager>().StartFreePlay();
+                }
+            }
+            if(hitInfo && hit.collider.gameObject == quitButton)
             {   
                 #if UNITY_STANDALONE
                     Application.Quit();
