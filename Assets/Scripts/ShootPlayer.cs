@@ -53,7 +53,7 @@ public class ShootPlayer : MonoBehaviour
                 if(hit.collider.gameObject.name == "Player")
                 {
                     var gameHandler = GameObject.Find("Game Handler");
-                    gameHandler.GetComponent<SpawnTarget>().setInRound(false);
+                    gameHandler.GetComponent<LevelManager>().SetInRound(false);
                 }
             }
         }
