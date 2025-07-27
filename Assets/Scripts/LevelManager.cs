@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public GameObject target;
     public GameObject results;
     public GameObject[] tutorialTargets;
+    public GameObject[] levelText;
 
     List<GameObject> liveTargets = new List<GameObject>();
     GameObject spawnPlane;
@@ -146,6 +147,8 @@ public class LevelManager : MonoBehaviour
                     inRound = false;
                     if(level != "3")
                     {
+                        levelText[int.Parse(level) - 1].SetActive(false);
+                        levelText[int.Parse(level)].SetActive(true);
                         startTarget.SetActive(true);
                     }
                     if(level == "3")
@@ -168,6 +171,8 @@ public class LevelManager : MonoBehaviour
             }
             if(!inRound && startTarget.activeInHierarchy == false && level == "1")
             {   
+                levelText[0].SetActive(false);
+                levelText[1].SetActive(true);
                 tTTH = 0;
                 score = 0;
                 targetsHit = 0;
@@ -184,6 +189,8 @@ public class LevelManager : MonoBehaviour
             }
             if(!inRound && startTarget.activeInHierarchy == false && level == "2")
             {   
+                levelText[1].SetActive(false);
+                levelText[2].SetActive(true);
                 tTTH = 0;
                 score = 0;
                 targetsHit = 0;
@@ -293,6 +300,16 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(target);
         }
+        foreach(GameObject text in levelText)
+        {
+            text.SetActive(false);
+        }
+        level = "0";
+        tTTH = 0;
+        score = 0;
+        targetsHit = 0;
+        shotsFired = 0;
+        mode = "Tutorial";
         inRound = false;
         inTutorial = true;
         inEasy = false;
@@ -300,6 +317,7 @@ public class LevelManager : MonoBehaviour
         inHard = false;
         inChallenge = false;
         inFreePlay = false;
+        startTarget.SetActive(false);
         results.SetActive(false);
     }
     public void StartEasy()
@@ -308,6 +326,10 @@ public class LevelManager : MonoBehaviour
         foreach(GameObject target in liveTargets)
         {
             Destroy(target);
+        }
+        foreach(GameObject text in levelText)
+        {
+            text.SetActive(false);
         }
         level = "0";
         tTTH = 0;
@@ -324,6 +346,7 @@ public class LevelManager : MonoBehaviour
         inFreePlay = false;
         targetsSpawned = 0;
         startTarget.SetActive(true);
+        levelText[0].SetActive(true);
         results.SetActive(false);
     }
     public void StartFreePlay()
