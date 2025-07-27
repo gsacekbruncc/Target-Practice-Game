@@ -41,13 +41,6 @@ public class LevelManager : MonoBehaviour
     string mode;
     string level;
 
-    
-    
-    
-    
-
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -144,20 +137,61 @@ public class LevelManager : MonoBehaviour
                     {
                         Destroy(target);
                     }
+
                     accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
                     aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
                     GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
                     results.SetActive(true);
+                    
                     inRound = false;
-                    inEasy = false;
+                    if(level != "3")
+                    {
+                        startTarget.SetActive(true);
+                    }
+                    if(level == "3")
+                    {
+                        inEasy = false;
+                    }
                 } 
             }
-            else if(startTarget.activeInHierarchy == false && !inRound)
+            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
             {   
                 level = "1";
                 inRound = true;
                 targetType = 0;
                 interval = 3;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            {   
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "2";
+                inRound = true;
+                targetType = 0;
+                interval = 1.5f;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            {   
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "3";
+                inRound = true;
+                targetType = 0;
+                interval = .75f;
                 liveTime = 3;
                 roundTime = 30;
                 targetsSpawned = Mathf.FloorToInt(roundTime / interval);
@@ -275,6 +309,7 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(target);
         }
+        level = "0";
         tTTH = 0;
         score = 0;
         targetsHit = 0;
