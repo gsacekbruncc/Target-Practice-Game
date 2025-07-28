@@ -30,7 +30,7 @@ public class DisplayResults : MonoBehaviour
         this.mode.GetComponent<TextMeshProUGUI>().text = mode;
         this.level.GetComponent<TextMeshProUGUI>().text = level;
         this.score.GetComponent<TextMeshProUGUI>().text = score;
-        this.targetsHit.GetComponent<TextMeshProUGUI>().text = targetsHit + " / " + GetComponent<LevelManager>().getTargetsSpawned();
+        this.targetsHit.GetComponent<TextMeshProUGUI>().text = targetsHit + " / " + GetComponent<LevelManager>().GetTargetsSpawned();
         this.aTTH.GetComponent<TextMeshProUGUI>().text = aTTH + " ms";
         this.accuracy.GetComponent<TextMeshProUGUI>().text = accuracy + "%";
     }
