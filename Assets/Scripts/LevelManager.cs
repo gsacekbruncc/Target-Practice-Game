@@ -91,6 +91,7 @@ public class LevelManager : MonoBehaviour
             && tutorialTargets[2].activeInHierarchy == false
             && tutorialTargets[3].activeInHierarchy == false)
             {
+                shootTime = 2;
                 tutorialTargets[3].SetActive(true);
                 tutorialStage = 3;
             }
@@ -291,6 +292,94 @@ public class LevelManager : MonoBehaviour
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
         }
+        if(inHard)
+        {   
+            if(inRound)
+            {
+                roundTime -= Time.deltaTime;
+                if(roundTime <= 0)
+                {
+                    CancelInvoke(nameof(Spawn));
+                    foreach(GameObject target in liveTargets)
+                    {
+                        Destroy(target);
+                    }
+
+                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
+                    results.SetActive(true);
+                    
+                    inRound = false;
+                    if(level != "3")
+                    {
+                        levelText[int.Parse(level) - 1].SetActive(false);
+                        levelText[int.Parse(level)].SetActive(true);
+                        startTarget.SetActive(true);
+                    }
+                    if(level == "3")
+                    {
+                        inHard = false;
+                    }
+                } 
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            {   
+                level = "1";
+                inRound = true;
+                targetType = 2;
+                shootTime = 1.9f;
+                moveDelta = 2;
+                moveSpeed = 3;
+                interval = 2;
+                liveTime = 2;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            {   
+                levelText[0].SetActive(false);
+                levelText[1].SetActive(true);
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "2";
+                inRound = true;
+                targetType = 2;
+                shootTime = 1;
+                moveDelta = 2;
+                moveSpeed = 3;
+                interval = 1;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            {   
+                levelText[1].SetActive(false);
+                levelText[2].SetActive(true);
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "3";
+                inRound = true;
+                targetType = 2;
+                moveDelta = 3;
+                moveSpeed = 4;
+                interval = .75f;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+        }
         if(!inRound)
         {
             CancelInvoke(nameof(Spawn));
@@ -301,23 +390,6 @@ public class LevelManager : MonoBehaviour
                 Destroy(target);
             }
         }
-
-        // else if(inRound || inFreePlay)
-        // {
-        //     if(roundTime > 0)
-        //     {
-        //         roundTime -= Time.deltaTime;
-        //     }
-        //     else
-        //     {  
-        //         //CancelInvoke() stops all invokes
-        //         CancelInvoke(nameof(Spawn));
-        //     }
-        // }
-        // else
-        // {
-        //     CancelInvoke(nameof(Spawn));
-        // }
     }
 
     void Spawn()
@@ -347,7 +419,7 @@ public class LevelManager : MonoBehaviour
                 mt.dx = moveDelta;
                 mt.speed = moveSpeed;
             }
-            else if(level is "2" && typeComp is 1 or 2)
+            else if(level == "2" && typeComp is 1 or 2)
             {
                 var mt = newTarget.AddComponent<MoveTarget>(); 
                 mt.dx = moveDelta;
@@ -356,8 +428,36 @@ public class LevelManager : MonoBehaviour
         }
         if(targetType == 2)
         {
-            var st = newTarget.AddComponent<ShootPlayer>();
-            st.time = shootTime;
+            var typeComp = Random.Range(0, 3);
+            if(level == "1")
+            {
+                if(typeComp is 0 or 1)
+                {
+                    var mt = newTarget.AddComponent<MoveTarget>(); 
+                    mt.dx = moveDelta;
+                    mt.speed = moveSpeed;
+                }
+                else
+                {
+                    var st = newTarget.AddComponent<ShootPlayer>();
+                    st.time = shootTime;
+                }
+            }
+            else
+            {
+                typeComp = Random.Range(0, 2);
+                if(typeComp == 0)
+                {
+                    var mt = newTarget.AddComponent<MoveTarget>(); 
+                    mt.dx = moveDelta;
+                    mt.speed = moveSpeed;
+                }
+                else
+                {
+                    var st = newTarget.AddComponent<ShootPlayer>();
+                    st.time = shootTime;
+                }
+            }
         }  
         liveTargets.Add(newTarget);
     }
@@ -365,6 +465,24 @@ public class LevelManager : MonoBehaviour
     public void SetInRound(bool status)
     {   
         inRound = status;
+    }
+    public void CancelGameMode()
+    {   
+        CancelInvoke(nameof(Spawn));
+        foreach(GameObject target in liveTargets)
+        {
+            Destroy(target);
+        }
+        foreach(GameObject text in levelText)
+        {
+            text.SetActive(false);
+        }        
+        inTutorial = false;
+        inEasy = false;
+        inMedium = false;
+        inHard = false;
+        inChallenge = false;
+        inFreePlay = false;
     }
     
     public void RemoveLiveTarget(GameObject target)
@@ -389,24 +507,19 @@ public class LevelManager : MonoBehaviour
         shotsFired++;
     }
 
-    public int getTargetsSpawned()
+    public int GetTargetsSpawned()
     {
         return targetsSpawned;
+    }
+    public float GetShootTime()
+    {
+        return shootTime;
     }
 
     
     public void StartTutorial()
     {
-        Debug.Log("Tutorial Started");
-        CancelInvoke(nameof(Spawn));
-        foreach(GameObject target in liveTargets)
-        {
-            Destroy(target);
-        }
-        foreach(GameObject text in levelText)
-        {
-            text.SetActive(false);
-        }
+        CancelGameMode();
         level = "0";
         tTTH = 0;
         score = 0;
@@ -415,25 +528,12 @@ public class LevelManager : MonoBehaviour
         mode = "Tutorial";
         inRound = false;
         inTutorial = true;
-        inEasy = false;
-        inMedium = false;
-        inHard = false;
-        inChallenge = false;
-        inFreePlay = false;
         startTarget.SetActive(false);
         results.SetActive(false);
     }
     public void StartEasy()
     {
-        CancelInvoke(nameof(Spawn));
-        foreach(GameObject target in liveTargets)
-        {
-            Destroy(target);
-        }
-        foreach(GameObject text in levelText)
-        {
-            text.SetActive(false);
-        }
+        CancelGameMode();
         level = "0";
         tTTH = 0;
         score = 0;
@@ -441,12 +541,7 @@ public class LevelManager : MonoBehaviour
         shotsFired = 0;
         mode = "Easy";
         inRound = false;
-        inTutorial = false;
         inEasy = true;
-        inMedium = false;
-        inHard = false;
-        inChallenge = false;
-        inFreePlay = false;
         targetsSpawned = 0;
         startTarget.SetActive(true);
         levelText[0].SetActive(true);
@@ -454,15 +549,7 @@ public class LevelManager : MonoBehaviour
     }
     public void StartMedium()
     {
-        CancelInvoke(nameof(Spawn));
-        foreach(GameObject target in liveTargets)
-        {
-            Destroy(target);
-        }
-        foreach(GameObject text in levelText)
-        {
-            text.SetActive(false);
-        }
+        CancelGameMode();
         level = "0";
         tTTH = 0;
         score = 0;
@@ -470,12 +557,24 @@ public class LevelManager : MonoBehaviour
         shotsFired = 0;
         mode = "Medium";
         inRound = false;
-        inTutorial = false;
-        inEasy = false;
         inMedium = true;
-        inHard = false;
-        inChallenge = false;
-        inFreePlay = false;
+        targetsSpawned = 0;
+        startTarget.SetActive(true);
+        levelText[0].SetActive(true);
+        results.SetActive(false);
+    }
+    public void StartHard()
+    {
+        CancelGameMode();
+        shootTime = 0;
+        level = "0";
+        tTTH = 0;
+        score = 0;
+        targetsHit = 0;
+        shotsFired = 0;
+        mode = "Hard";
+        inRound = false;
+        inHard = true;
         targetsSpawned = 0;
         startTarget.SetActive(true);
         levelText[0].SetActive(true);
@@ -483,15 +582,10 @@ public class LevelManager : MonoBehaviour
     }
     public void StartFreePlay()
     {
-        CancelInvoke(nameof(Spawn));
+        CancelGameMode();
         InvokeRepeating(nameof(Spawn), startDelay, interval);
         inRound = false;
         inRound = true;
-        inTutorial = false;
-        inEasy = false;
-        inMedium = false;
-        inHard = false;
-        inChallenge = false;
         inFreePlay = true;
     }
     // void StartRound()
