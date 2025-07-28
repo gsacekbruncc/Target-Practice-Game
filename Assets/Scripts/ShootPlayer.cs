@@ -26,10 +26,12 @@ public class ShootPlayer : MonoBehaviour
         if(!laserSpawned)
         {
             newLaser = Instantiate(laserPrefab, transform.position, transform.rotation);
+            newLaser.AddComponent<ChangeColor>();
             laserSpawned = true;
         }
         else
         {   
+            newLaser.GetComponent<ChangeColor>().SetTime(time);
             var tp = newLaser.transform.position;
             var ls = newLaser.transform.localScale;
 
@@ -56,6 +58,11 @@ public class ShootPlayer : MonoBehaviour
                     gameHandler.GetComponent<LevelManager>().SetInRound(false);
                 }
             }
+        }
+
+        if(gameObject.CompareTag("TutorialTarget"))
+        {
+            newLaser.tag = "TutorialLaser";
         }
     }
 
