@@ -10,6 +10,7 @@ TagManager:
   - Button
   - ApplyCrosshair
   - TutorialTarget
+  - TutorialLaser
   layers:
   - Default
   - TransparentFX
