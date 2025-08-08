@@ -26,12 +26,12 @@ public class ShootPlayer : MonoBehaviour
         if(!laserSpawned)
         {
             newLaser = Instantiate(laserPrefab, transform.position, transform.rotation);
-            newLaser.AddComponent<ChangeColor>();
+            newLaser.AddComponent<ChangeLaserColor>();
             laserSpawned = true;
         }
         else
         {   
-            newLaser.GetComponent<ChangeColor>().SetTime(time);
+            newLaser.GetComponent<ChangeLaserColor>().SetTime(time);
             var tp = newLaser.transform.position;
             var ls = newLaser.transform.localScale;
 
