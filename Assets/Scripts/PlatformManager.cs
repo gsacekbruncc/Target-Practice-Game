@@ -56,7 +56,7 @@ public class PlatformManager : MonoBehaviour
                 platform.transform.position = new Vector3(platform.transform.position.x, platform.transform.position.y, zPosOff);
                 touching = false;
                 liveTime = 2;
-                respawnTime = 2;
+                respawnTime = 3;
                 Debug.Log("Set respawnTime: " + respawnTime);
             }
 
