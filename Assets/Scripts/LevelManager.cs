@@ -113,22 +113,36 @@ public class LevelManager : MonoBehaviour
                 tutorialStage = 4;
             }
             //Stage 5
-            // if(tutorialStage == 4 && tutorialTargets[0].activeInHierarchy == false 
-            // && tutorialTargets[1].activeInHierarchy == false 
-            // && tutorialTargets[2].activeInHierarchy == false 
-            // && tutorialTargets[3].activeInHierarchy == false
-            // && tutorialTargets[4].activeInHierarchy == false
-            // && tutorialTargets[5].activeInHierarchy == false)
-            // {
-            //     tutorialTargets[5].SetActive(true);
-            //     tutorialStage = 5;
-            // }
-            //End Tutorial
-            if(tutorialStage == 4 && tutorialTargets[0].activeInHierarchy == false
+            if(tutorialStage == 4 && tutorialTargets[0].activeInHierarchy == false 
             && tutorialTargets[1].activeInHierarchy == false 
             && tutorialTargets[2].activeInHierarchy == false 
             && tutorialTargets[3].activeInHierarchy == false
-            && tutorialTargets[4].activeInHierarchy == false)
+            && tutorialTargets[4].activeInHierarchy == false
+            && tutorialTargets[5].activeInHierarchy == false)
+            {
+                tutorialTargets[5].SetActive(true);
+                tutorialStage = 5;
+            }
+            //Stage 6
+            if(tutorialStage == 5 && tutorialTargets[0].activeInHierarchy == false 
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false 
+            && tutorialTargets[3].activeInHierarchy == false
+            && tutorialTargets[4].activeInHierarchy == false
+            && tutorialTargets[5].activeInHierarchy == false
+            && tutorialTargets[6].activeInHierarchy == false)
+            {
+                tutorialTargets[6].SetActive(true);
+                tutorialStage = 6;
+            }
+            //End Tutorial
+            if(tutorialStage == 6 && tutorialTargets[0].activeInHierarchy == false
+            && tutorialTargets[1].activeInHierarchy == false 
+            && tutorialTargets[2].activeInHierarchy == false 
+            && tutorialTargets[3].activeInHierarchy == false
+            && tutorialTargets[4].activeInHierarchy == false
+            && tutorialTargets[5].activeInHierarchy == false
+            && tutorialTargets[6].activeInHierarchy == false)
             {
                 inTutorial = false;
             }
