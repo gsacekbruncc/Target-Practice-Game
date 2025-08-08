@@ -33,7 +33,6 @@ public class LevelManager : MonoBehaviour
     int shotsFired;
     float score;
     float tTTH;
-    float aTTH;
     float interval;
     float startDelay;
     float roundTime;
@@ -46,6 +45,7 @@ public class LevelManager : MonoBehaviour
     string accuracy;
     string mode;
     string level;
+    string aTTH;
 
     // Start is called before the first frame update
     void Start()
@@ -159,9 +159,16 @@ public class LevelManager : MonoBehaviour
                     {
                         Destroy(target);
                     }
-
-                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    if(targetsHit > 0)
+                    {
+                        accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                    }
+                    else
+                    {
+                        accuracy = "N/A";
+                        aTTH = "N/A";
+                    }
                     GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
                     results.SetActive(true);
                     
@@ -239,9 +246,16 @@ public class LevelManager : MonoBehaviour
                     {
                         Destroy(target);
                     }
-
-                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    if(targetsHit > 0)
+                    {
+                        accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                    }
+                    else
+                    {
+                        accuracy = "N/A";
+                        aTTH = "N/A";
+                    }
                     GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
                     results.SetActive(true);
                     
@@ -325,9 +339,16 @@ public class LevelManager : MonoBehaviour
                     {
                         Destroy(target);
                     }
-
-                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    if(targetsHit > 0)
+                    {
+                        accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                    }
+                    else
+                    {
+                        accuracy = "N/A";
+                        aTTH = "N/A";
+                    }
                     GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
                     results.SetActive(true);
                     
@@ -408,14 +429,22 @@ public class LevelManager : MonoBehaviour
                 roundTime -= Time.deltaTime;
                 if(roundTime <= 0)
                 {
+                    lava.SetActive(false);
                     CancelInvoke(nameof(Spawn));
                     foreach(GameObject target in liveTargets)
                     {
                         Destroy(target);
                     }
-
-                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    if(targetsHit > 0)
+                    {
+                        accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                    }
+                    else
+                    {
+                        accuracy = "N/A";
+                        aTTH = "N/A";
+                    }
                     GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
                     results.SetActive(true);
                     

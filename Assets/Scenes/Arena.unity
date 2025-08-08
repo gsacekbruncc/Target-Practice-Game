@@ -1438,7 +1438,7 @@ GameObject:
   - component: {fileID: 129551732}
   - component: {fileID: 129551731}
   - component: {fileID: 129551730}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Area Collider Large
   m_TagString: Jumpable
   m_Icon: {fileID: 0}
@@ -2555,7 +2555,7 @@ GameObject:
   - component: {fileID: 254135206}
   - component: {fileID: 254135205}
   - component: {fileID: 254135209}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Area Collider Small
   m_TagString: Jumpable
   m_Icon: {fileID: 0}
@@ -5858,7 +5858,7 @@ GameObject:
   - component: {fileID: 663471328}
   - component: {fileID: 663471327}
   - component: {fileID: 663471326}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Area Collider Medium
   m_TagString: Jumpable
   m_Icon: {fileID: 0}
