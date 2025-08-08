@@ -74,6 +74,10 @@ public class MenuManager : MonoBehaviour
                 {
                     GetComponent<LevelManager>().StartHard();
                 }
+                if(modeButton == gameModes[4])
+                {
+                    GetComponent<LevelManager>().StartChallenge();
+                }
                 if(modeButton == gameModes[5])
                 {
                     GetComponent<LevelManager>().StartFreePlay();

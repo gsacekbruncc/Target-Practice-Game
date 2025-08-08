@@ -6,12 +6,14 @@ using System.Linq;
 public class LevelManager : MonoBehaviour
 {
     
-    public float targetValue;
+    //public float targetValue;
     public GameObject startTarget;
     public GameObject target;
     public GameObject results;
+    public GameObject lava;
     public GameObject[] tutorialTargets;
     public GameObject[] levelText;
+    public GameObject[] platforms;
 
     List<GameObject> liveTargets = new List<GameObject>();
     GameObject spawnPlane;
@@ -39,6 +41,8 @@ public class LevelManager : MonoBehaviour
     float shootTime;
     float moveDelta;
     float moveSpeed;
+    float zPosOff;
+    float zPosOn;
     string accuracy;
     string mode;
     string level;
@@ -46,6 +50,9 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        zPosOff = GameObject.Find("Area Collider Small").GetComponent<PlatformManager>().zPosOff;
+        zPosOn = GameObject.Find("Area Collider Small").GetComponent<PlatformManager>().zPosOn;
         moveTarget = GetComponent<MoveTarget>();
         shootPlayer = GetComponent<ShootPlayer>();
         roundTime += startDelay;
@@ -380,11 +387,101 @@ public class LevelManager : MonoBehaviour
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
         }
+        if(inChallenge)
+        {   
+            if(inRound)
+            {
+                roundTime -= Time.deltaTime;
+                if(roundTime <= 0)
+                {
+                    CancelInvoke(nameof(Spawn));
+                    foreach(GameObject target in liveTargets)
+                    {
+                        Destroy(target);
+                    }
+
+                    accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
+                    aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100);
+                    GetComponent<DisplayResults>().setValue(mode, level, score.ToString(), targetsHit.ToString(), aTTH.ToString(), accuracy.ToString());
+                    results.SetActive(true);
+                    
+                    inRound = false;
+                    if(level != "3")
+                    {
+                        levelText[int.Parse(level) - 1].SetActive(false);
+                        levelText[int.Parse(level)].SetActive(true);
+                        startTarget.SetActive(true);
+                    }
+                    if(level == "3")
+                    {
+                        inHard = false;
+                    }
+                } 
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            {   
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "1";
+                inRound = true;
+                targetType = 0;
+                interval = 1.5f;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                lava.SetActive(true);
+
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            {   
+                levelText[0].SetActive(false);
+                levelText[1].SetActive(true);
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "2";
+                inRound = true;
+                targetType = 1;
+                moveDelta = 2;
+                moveSpeed = 3;
+                interval = 1;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                lava.SetActive(true);
+                
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            {   
+                levelText[1].SetActive(false);
+                levelText[2].SetActive(true);
+                tTTH = 0;
+                score = 0;
+                targetsHit = 0;
+                shotsFired = 0;        
+                level = "3";
+                inRound = true;
+                targetType = 2;
+                shootTime = 1;
+                moveDelta = 2;
+                moveSpeed = 3;
+                interval = 1;
+                liveTime = 3;
+                roundTime = 30;
+                targetsSpawned = Mathf.FloorToInt(roundTime / interval);
+                lava.SetActive(true);
+                
+                InvokeRepeating(nameof(Spawn), 0f, interval);
+            }
+        }
         if(!inRound)
         {
             CancelInvoke(nameof(Spawn));
-            inTutorial = false;
-            inFreePlay = false;
             foreach(GameObject target in liveTargets)
             {
                 Destroy(target);
@@ -466,6 +563,7 @@ public class LevelManager : MonoBehaviour
     {   
         inRound = status;
     }
+    
     public void CancelGameMode()
     {   
         CancelInvoke(nameof(Spawn));
@@ -476,7 +574,13 @@ public class LevelManager : MonoBehaviour
         foreach(GameObject text in levelText)
         {
             text.SetActive(false);
-        }        
+        }
+        foreach(GameObject platform in platforms)     
+        {
+            var pos = platform.transform.position;
+            pos = new Vector3(pos.x, pos.y, zPosOff);
+        }   
+        lava.SetActive(false);
         inTutorial = false;
         inEasy = false;
         inMedium = false;
@@ -484,7 +588,7 @@ public class LevelManager : MonoBehaviour
         inChallenge = false;
         inFreePlay = false;
     }
-    
+
     public void RemoveLiveTarget(GameObject target)
     {
         liveTargets.Remove(target);
@@ -514,6 +618,14 @@ public class LevelManager : MonoBehaviour
     public float GetShootTime()
     {
         return shootTime;
+    }
+    public bool GetInChallenge()
+    {
+        return inChallenge;
+    }
+    public bool GetInRound()
+    {
+        return inRound;
     }
 
     
@@ -579,6 +691,28 @@ public class LevelManager : MonoBehaviour
         startTarget.SetActive(true);
         levelText[0].SetActive(true);
         results.SetActive(false);
+    }
+    public void StartChallenge()
+    {
+        CancelGameMode();
+        shootTime = 0;
+        level = "0";
+        tTTH = 0;
+        score = 0;
+        targetsHit = 0;
+        shotsFired = 0;
+        mode = "Challenge";
+        inRound = false;
+        inChallenge = true;
+        targetsSpawned = 0;
+        startTarget.SetActive(true);
+        levelText[0].SetActive(true);
+        results.SetActive(false);
+        foreach(GameObject platform in platforms)
+        {
+            var pos = platform.transform.position;
+            pos = new Vector3(pos.x, pos.y, zPosOn);
+        }
     }
     public void StartFreePlay()
     {
