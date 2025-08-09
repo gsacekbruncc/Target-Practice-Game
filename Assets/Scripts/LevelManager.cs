@@ -14,11 +14,14 @@ public class LevelManager : MonoBehaviour
     public GameObject[] tutorialTargets;
     public GameObject[] levelText;
     public GameObject[] platforms;
+    public AudioClip winAudio;
 
     List<GameObject> liveTargets = new List<GameObject>();
     GameObject spawnPlane;
+    GameObject player;
     MoveTarget moveTarget;
     ShootPlayer shootPlayer;
+    AudioSource playerAudio;
     bool inRound;
     bool inTutorial;
     bool inEasy;
@@ -50,7 +53,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        player = GameObject.Find("Player");
+        playerAudio = player.GetComponent<AudioSource>();
         zPosOff = GameObject.Find("Area Collider Small").GetComponent<PlatformManager>().zPosOff;
         zPosOn = GameObject.Find("Area Collider Small").GetComponent<PlatformManager>().zPosOn;
         moveTarget = GetComponent<MoveTarget>();
@@ -144,6 +148,7 @@ public class LevelManager : MonoBehaviour
             && tutorialTargets[5].activeInHierarchy == false
             && tutorialTargets[6].activeInHierarchy == false)
             {
+                playerAudio.PlayOneShot(winAudio, 1f);
                 inTutorial = false;
             }
         }
@@ -181,6 +186,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        playerAudio.PlayOneShot(winAudio, 1f);
                         inEasy = false;
                     }
                 } 
@@ -268,6 +274,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        playerAudio.PlayOneShot(winAudio, 1f);
                         inMedium = false;
                     }
                 } 
@@ -361,6 +368,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        playerAudio.PlayOneShot(winAudio, 1f);
                         inHard = false;
                     }
                 } 
@@ -457,6 +465,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        playerAudio.PlayOneShot(winAudio, 1f);
                         inHard = false;
                     }
                 } 

@@ -52,4 +52,9 @@ public class MoveCharacter : MonoBehaviour
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
+
+    public bool GetIsJumpable()
+    {
+        return isJumpable;
+    }
 }

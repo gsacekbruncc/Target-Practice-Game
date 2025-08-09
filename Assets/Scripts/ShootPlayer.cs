@@ -5,18 +5,21 @@ using UnityEngine;
 public class ShootPlayer : MonoBehaviour
 {
     public float time;
+    public AudioClip gameOver;
 
     bool laserSpawned;
     GameObject player;
     GameObject laserPrefab;
     GameObject newLaser;
+    AudioSource source;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //player = Camera.main;
         player = GameObject.Find("Player");
         laserPrefab = GameObject.Find("Laser");
+        source = player.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
