@@ -78,10 +78,10 @@ public class MenuManager : MonoBehaviour
                 {
                     GetComponent<LevelManager>().StartChallenge();
                 }
-                if(modeButton == gameModes[5])
-                {
-                    GetComponent<LevelManager>().StartFreePlay();
-                }
+                // if(modeButton == gameModes[5])
+                // {
+                //     GetComponent<LevelManager>().StartFreePlay();
+                // }
             }
             if(hitInfo && hit.collider.gameObject == quitButton)
             {   
