@@ -11,6 +11,8 @@ TagManager:
   - ApplyCrosshair
   - TutorialTarget
   - TutorialLaser
+  - IncrementSensitivity
+  - DecrementSensitivity
   layers:
   - Default
   - TransparentFX
