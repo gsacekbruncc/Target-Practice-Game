@@ -167,7 +167,7 @@ public class LevelManager : MonoBehaviour
                     if(targetsHit > 0)
                     {
                         accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 1000).ToString();
                     }
                     else
                     {
@@ -255,7 +255,7 @@ public class LevelManager : MonoBehaviour
                     if(targetsHit > 0)
                     {
                         accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 1000).ToString();
                     }
                     else
                     {
@@ -349,7 +349,7 @@ public class LevelManager : MonoBehaviour
                     if(targetsHit > 0)
                     {
                         accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 1000).ToString();
                     }
                     else
                     {
@@ -446,7 +446,7 @@ public class LevelManager : MonoBehaviour
                     if(targetsHit > 0)
                     {
                         accuracy = ((float)targetsHit / shotsFired * 100).ToString("00.00");
-                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 100).ToString();
+                        aTTH = Mathf.RoundToInt((float)tTTH / targetsHit * 1000).ToString();
                     }
                     else
                     {
