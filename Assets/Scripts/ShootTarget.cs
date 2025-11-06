@@ -40,7 +40,17 @@ public class ShootTarget : MonoBehaviour
 
                 if(target.CompareTag("Button"))
                 {
-                    hitSoundSource.PlayOneShot(hitSoundClip, .5f);
+                    if(target.transform.parent.name == "Game Modes")
+                    {
+                        if(SaveManager.IsLevelUnlockedString(target.name))
+                        {
+                            hitSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        }
+                    }
+                    else
+                    {
+                        hitSoundSource.PlayOneShot(hitSoundClip, .5f);
+                    }
                 }
 
                 if(target.CompareTag("TutorialTarget"))

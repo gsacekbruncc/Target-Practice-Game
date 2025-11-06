@@ -148,6 +148,7 @@ public class LevelManager : MonoBehaviour
             && tutorialTargets[5].activeInHierarchy == false
             && tutorialTargets[6].activeInHierarchy == false)
             {
+                SaveManager.UnlockNextLevel(0);
                 playerAudio.PlayOneShot(winAudio, 1f);
                 inTutorial = false;
             }
@@ -186,6 +187,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        SaveManager.UnlockNextLevel(1);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inEasy = false;
                     }
@@ -274,6 +276,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        SaveManager.UnlockNextLevel(2);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inMedium = false;
                     }
@@ -368,6 +371,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        SaveManager.UnlockNextLevel(3);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inHard = false;
                     }
@@ -465,6 +469,7 @@ public class LevelManager : MonoBehaviour
                     }
                     if(level == "3")
                     {
+                        SaveManager.UnlockNextLevel(4);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inHard = false;
                     }

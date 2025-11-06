@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
     Camera cam;
     GameObject button;
+    Color locked = new Color(118, 118, 118);
+    Color unlocked = new Color(255, 255, 255);
     
     public GameObject[] buttons;
     public GameObject[] gameModes;
@@ -62,19 +65,19 @@ public class MenuManager : MonoBehaviour
                 {
                     GetComponent<LevelManager>().StartTutorial();
                 }
-                if(modeButton == gameModes[1])
+                if(modeButton == gameModes[1] && SaveManager.IsLevelUnlocked(1))
                 {
                     GetComponent<LevelManager>().StartEasy();
                 }
-                if(modeButton == gameModes[2])
+                if(modeButton == gameModes[2] && SaveManager.IsLevelUnlocked(2))
                 {
                     GetComponent<LevelManager>().StartMedium();
                 }
-                if(modeButton == gameModes[3])
+                if(modeButton == gameModes[3] && SaveManager.IsLevelUnlocked(3))
                 {
                     GetComponent<LevelManager>().StartHard();
                 }
-                if(modeButton == gameModes[4])
+                if(modeButton == gameModes[4] && SaveManager.IsLevelUnlocked(4))
                 {
                     GetComponent<LevelManager>().StartChallenge();
                 }
@@ -92,6 +95,26 @@ public class MenuManager : MonoBehaviour
                     UnityEditor.EditorApplication.isPlaying = false;
                 #endif
             }
+        }
+        if(SaveManager.IsLevelUnlocked(1))
+        {
+            gameModes[1].GetComponent<Image>().color = unlocked;
+        }
+        if(SaveManager.IsLevelUnlocked(2))
+        {
+            gameModes[2].GetComponent<Image>().color = unlocked;
+        }
+        if(SaveManager.IsLevelUnlocked(3))
+        {
+            gameModes[3].GetComponent<Image>().color = unlocked;
+        }
+        if(SaveManager.IsLevelUnlocked(4))
+        {
+            gameModes[4].GetComponent<Image>().color = unlocked;
+        }
+        if(SaveManager.IsLevelUnlocked(5))
+        {
+            gameModes[5].GetComponent<Image>().color = unlocked;
         }
     }
 }
