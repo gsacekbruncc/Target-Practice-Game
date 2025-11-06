@@ -7,7 +7,9 @@ public class ShootTarget : MonoBehaviour
 {
     public AudioClip fireSoundClip;
     public AudioClip hitSoundClip;
-    public float rayDistance = 100;
+    
+    float rayDistance = 100;
+    float bulletRadius = .05f;
 
     AudioSource fireSoundSource;
     AudioSource hitSoundSource;
@@ -34,7 +36,7 @@ public class ShootTarget : MonoBehaviour
             //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
 
 
-            if(Physics.Raycast(ray, out RaycastHit hit, rayDistance))
+            if(Physics.SphereCast(ray, bulletRadius, out RaycastHit hit, rayDistance))
             {
                 var target = hit.collider.gameObject;
 
@@ -52,7 +54,6 @@ public class ShootTarget : MonoBehaviour
                         hitSoundSource.PlayOneShot(hitSoundClip, .5f);
                     }
                 }
-
                 if(target.CompareTag("TutorialTarget"))
                 {
                     hitSoundSource.PlayOneShot(hitSoundClip, .5f);
