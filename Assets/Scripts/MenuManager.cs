@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    Camera cam;
     GameObject button;
     GameObject player;
     Color locked = new Color(118, 118, 118);
@@ -15,7 +14,7 @@ public class MenuManager : MonoBehaviour
     public GameObject[] buttons;
     public GameObject[] gameModes;
     public GameObject quitButton;
-
+    Camera cam;
     
     
 
@@ -32,10 +31,8 @@ public class MenuManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-            var hitInfo = Physics.Raycast(ray, out var hit);
-            GameObject target = hit.collider.gameObject;
-            if(hitInfo && buttons.Contains(hit.collider.gameObject))
+            GameObject target = cam.GetComponent<ShootTarget>().GetTarget();
+            if(buttons.Contains(target))
             {   
                 var currButton = target;
                 GameObject currSubMenu = currButton.GetComponent<ButtonInfo>().subMenu;
@@ -64,7 +61,7 @@ public class MenuManager : MonoBehaviour
                     Application.Quit();
                 }
             }
-            if(hitInfo && gameModes.Contains(target))
+            if(gameModes.Contains(target))
             {
                 var modeButton = target;
                 
@@ -94,12 +91,12 @@ public class MenuManager : MonoBehaviour
                 {
                     GetComponent<LevelManager>().StartChallenge();
                 }
-                // if(modeButton == gameModes[5])
-                // {
-                //     GetComponent<LevelManager>().StartFreePlay();
-                // }
+                if(modeButton == gameModes[5] && SaveManager.IsLevelUnlocked(4))
+                {
+                    GetComponent<LevelManager>().StartBlitz();
+                }
             }
-            if(hitInfo && target == quitButton)
+            if(target == quitButton)
             {   
                 #if UNITY_STANDALONE
                     Application.Quit();
@@ -125,7 +122,7 @@ public class MenuManager : MonoBehaviour
         {
             gameModes[4].GetComponent<Image>().color = unlocked;
         }
-        if(SaveManager.IsLevelUnlocked(5))
+        if(SaveManager.IsLevelUnlocked(4))
         {
             gameModes[5].GetComponent<Image>().color = unlocked;
         }

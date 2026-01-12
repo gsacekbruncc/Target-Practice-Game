@@ -13,10 +13,12 @@ public class DisplayResults : MonoBehaviour
     public GameObject aTTH;
     public GameObject accuracy;
 
+    GameObject GameHandler;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameHandler = GameObject.Find("Game Handler");
     }
 
     // Update is called once per frame
@@ -28,11 +30,23 @@ public class DisplayResults : MonoBehaviour
     public void setValue(string mode, string level, string score, string targetsHit, string aTTH, string accuracy)
     {
         this.mode.GetComponent<TextMeshProUGUI>().text = mode;
-        this.level.GetComponent<TextMeshProUGUI>().text = level;
         this.score.GetComponent<TextMeshProUGUI>().text = score;
-        this.targetsHit.GetComponent<TextMeshProUGUI>().text = targetsHit + " / " + GetComponent<LevelManager>().GetTargetsSpawned();
+        
         this.aTTH.GetComponent<TextMeshProUGUI>().text = aTTH + " ms";
         this.accuracy.GetComponent<TextMeshProUGUI>().text = accuracy + "%";
+
+        if(!GameHandler.GetComponent<LevelManager>().GetInBlitz())
+        {
+            this.level.GetComponent<TextMeshProUGUI>().text = level;
+            this.targetsHit.GetComponent<TextMeshProUGUI>().text = targetsHit + " / " + GetComponent<LevelManager>().GetTargetsSpawned();
+        }
+        else
+        {
+            this.level.GetComponent<TextMeshProUGUI>().text = "N/A";
+            this.targetsHit.GetComponent<TextMeshProUGUI>().text = targetsHit;
+            
+        }
+        
     }
 
 }

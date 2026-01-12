@@ -39,7 +39,7 @@ public static class SaveManager
         {
             return 3 <= unlocked;
         }
-        if(level == "Challenge")
+        if(level == "Challenge" || level == "Blitz")
         {
             return 4 <= unlocked;
         }

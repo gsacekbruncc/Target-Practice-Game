@@ -7,11 +7,13 @@ public class TargetInfo : MonoBehaviour
     public int stillPoints;
     public int movingPoints;
     public int hostilePoints;
+    public bool blitz;
     
     int points;
     int bonusPoints;
     float time;
     string type;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -61,5 +63,13 @@ public class TargetInfo : MonoBehaviour
     public float GetTTH()
     {
         return time;
+    }
+    public bool IsBlitzTarget()
+    {
+        return blitz;
+    }
+    public void SetBlitzTarget(bool blitz)
+    {
+        this.blitz = blitz;
     }
 }

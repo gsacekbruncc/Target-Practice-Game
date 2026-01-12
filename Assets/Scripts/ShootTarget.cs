@@ -12,7 +12,7 @@ public class ShootTarget : MonoBehaviour
     
     float rayDistance = 100;
     float bulletRadius = .05f;
-
+    GameObject target;
     AudioSource fireSoundSource;
     AudioSource playerSoundSource;
     GameObject gameHandler;
@@ -32,11 +32,12 @@ public class ShootTarget : MonoBehaviour
         {
             Ray ray = new Ray(transform.position, transform.forward);
             gameHandler.GetComponent<LevelManager>().IncShotsFired();
-            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100); 
+            Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100); 
             
             if(Physics.SphereCast(ray, bulletRadius, out RaycastHit hit, rayDistance))
             {
-                var target = hit.collider.gameObject;
+                target = hit.collider.gameObject;
+                Debug.Log(target.name);
 
                 if(target.CompareTag("Button") || target.CompareTag("Slider") || target.CompareTag("IncrementSensitivity") || target.CompareTag("DecrementSensitivity"))
                 {
@@ -66,10 +67,16 @@ public class ShootTarget : MonoBehaviour
                     }
                     if(target.CompareTag("Target"))
                     {
+                        bool blitz = target.GetComponent<TargetInfo>().IsBlitzTarget();
+                        if(blitz)
+                        {
+                            gameHandler.GetComponent<LevelManager>().Spawn();
+                        }
+
                         playerSoundSource.PlayOneShot(hitSoundClip, .5f);
                         gameHandler.GetComponent<LevelManager>().IncTTTH(target.GetComponent<TargetInfo>().GetTTH());
                         gameHandler.GetComponent<LevelManager>().IncScore(target.GetComponent<TargetInfo>().GetPoints());
-                        gameHandler.GetComponent<LevelManager>().IncTargetsHit();
+                        gameHandler.GetComponent<LevelManager>().IncTargetsHit();   
                         gameHandler.GetComponent<LevelManager>().RemoveLiveTarget(target);
                         Destroy(target);
                     }
@@ -77,5 +84,9 @@ public class ShootTarget : MonoBehaviour
                 
             }
         }
-    }   
+    }  
+    public GameObject GetTarget()
+    {
+        return target;
+    } 
 }
