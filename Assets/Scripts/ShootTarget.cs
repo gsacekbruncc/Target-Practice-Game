@@ -7,19 +7,21 @@ public class ShootTarget : MonoBehaviour
 {
     public AudioClip fireSoundClip;
     public AudioClip hitSoundClip;
+    public AudioClip clickSoundClip;
+    public AudioClip lockedSoundClip;
     
     float rayDistance = 100;
     float bulletRadius = .05f;
 
     AudioSource fireSoundSource;
-    AudioSource hitSoundSource;
+    AudioSource playerSoundSource;
     GameObject gameHandler;
 
     // Start is called before the first frame update
     void Start()
     {
         fireSoundSource = GameObject.Find("AK 47").GetComponent<AudioSource>();
-        hitSoundSource = GameObject.Find("Player").GetComponent<AudioSource>();
+        playerSoundSource = GameObject.Find("Player").GetComponent<AudioSource>();
         gameHandler = GameObject.Find("Game Handler");
     }
 
@@ -28,46 +30,51 @@ public class ShootTarget : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            fireSoundSource.PlayOneShot(fireSoundClip, .5f);
-
-            gameHandler.GetComponent<LevelManager>().IncShotsFired();
-
             Ray ray = new Ray(transform.position, transform.forward);
-            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100);
-
-
+            gameHandler.GetComponent<LevelManager>().IncShotsFired();
+            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 100); 
+            
             if(Physics.SphereCast(ray, bulletRadius, out RaycastHit hit, rayDistance))
             {
                 var target = hit.collider.gameObject;
 
-                if(target.CompareTag("Button"))
+                if(target.CompareTag("Button") || target.CompareTag("Slider") || target.CompareTag("IncrementSensitivity") || target.CompareTag("DecrementSensitivity"))
                 {
                     if(target.transform.parent.name == "Game Modes")
                     {
                         if(SaveManager.IsLevelUnlockedString(target.name))
                         {
-                            hitSoundSource.PlayOneShot(hitSoundClip, .5f);
+                            playerSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        }
+                        else
+                        {
+                            playerSoundSource.PlayOneShot(lockedSoundClip, .2f);
                         }
                     }
-                    else
+                    else if(!target.CompareTag("Slider"))
                     {
-                        hitSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        playerSoundSource.PlayOneShot(clickSoundClip, .1f);
                     }
                 }
-                if(target.CompareTag("TutorialTarget"))
+                else
                 {
-                    hitSoundSource.PlayOneShot(hitSoundClip, .5f);
-                    target.SetActive(false);
+                    fireSoundSource.PlayOneShot(fireSoundClip, .5f);
+                    if(target.CompareTag("TutorialTarget"))
+                    {
+                        playerSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        target.SetActive(false);
+                    }
+                    if(target.CompareTag("Target"))
+                    {
+                        playerSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        gameHandler.GetComponent<LevelManager>().IncTTTH(target.GetComponent<TargetInfo>().GetTTH());
+                        gameHandler.GetComponent<LevelManager>().IncScore(target.GetComponent<TargetInfo>().GetPoints());
+                        gameHandler.GetComponent<LevelManager>().IncTargetsHit();
+                        gameHandler.GetComponent<LevelManager>().RemoveLiveTarget(target);
+                        Destroy(target);
+                    }
                 }
-                else if(target.CompareTag("Target"))
-                {
-                    hitSoundSource.PlayOneShot(hitSoundClip, .5f);
-                    gameHandler.GetComponent<LevelManager>().IncTTTH(target.GetComponent<TargetInfo>().GetTTH());
-                    gameHandler.GetComponent<LevelManager>().IncScore(target.GetComponent<TargetInfo>().GetPoints());
-                    gameHandler.GetComponent<LevelManager>().IncTargetsHit();
-                    gameHandler.GetComponent<LevelManager>().RemoveLiveTarget(target);
-                    Destroy(target);
-                }
+                
             }
         }
     }   

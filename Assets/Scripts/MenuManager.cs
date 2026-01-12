@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 {
     Camera cam;
     GameObject button;
+    GameObject player;
     Color locked = new Color(118, 118, 118);
     Color unlocked = new Color(255, 255, 255);
     
@@ -15,11 +16,15 @@ public class MenuManager : MonoBehaviour
     public GameObject[] gameModes;
     public GameObject quitButton;
 
+    
+    
+
 
     // Start is called before the first frame update
     void Start()
     {
         cam = Camera.main;
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -29,9 +34,10 @@ public class MenuManager : MonoBehaviour
         {
             Ray ray = new Ray(cam.transform.position, cam.transform.forward);
             var hitInfo = Physics.Raycast(ray, out var hit);
+            GameObject target = hit.collider.gameObject;
             if(hitInfo && buttons.Contains(hit.collider.gameObject))
             {   
-                var currButton = hit.collider.gameObject;
+                var currButton = target;
                 GameObject currSubMenu = currButton.GetComponent<ButtonInfo>().subMenu;
                 int currId = currButton.GetComponent<ButtonInfo>().id;
                 
@@ -58,9 +64,16 @@ public class MenuManager : MonoBehaviour
                     Application.Quit();
                 }
             }
-            if(hitInfo && gameModes.Contains(hit.collider.gameObject))
+            if(hitInfo && gameModes.Contains(target))
             {
-                var modeButton = hit.collider.gameObject;
+                var modeButton = target;
+                
+                if(SaveManager.IsLevelUnlockedString(target.name))
+                { 
+                    cam.GetComponent<LookCharacter>().SetPitch(-2.5f);
+                    player.transform.position = new Vector3(0f, .8999f, -6.204f);
+                    player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                }
                 if(modeButton == gameModes[0])
                 {
                     GetComponent<LevelManager>().StartTutorial();
@@ -86,7 +99,7 @@ public class MenuManager : MonoBehaviour
                 //     GetComponent<LevelManager>().StartFreePlay();
                 // }
             }
-            if(hitInfo && hit.collider.gameObject == quitButton)
+            if(hitInfo && target == quitButton)
             {   
                 #if UNITY_STANDALONE
                     Application.Quit();

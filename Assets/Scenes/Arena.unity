@@ -8427,7 +8427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireSoundClip: {fileID: 8300000, guid: 112eececdb0d2d64a9263d36a6521985, type: 3}
   hitSoundClip: {fileID: 8300000, guid: 74f525fe7f17c2f4882b5269eeca9bf7, type: 3}
-  rayDistance: 100
+  clickSoundClip: {fileID: 8300000, guid: 928cd3185e5bf6045a93df2a0efe73d6, type: 3}
 --- !u!1 &966446040
 GameObject:
   m_ObjectHideFlags: 0
@@ -10181,7 +10181,7 @@ GameObject:
   - component: {fileID: 1196224064}
   m_Layer: 5
   m_Name: Free Play
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

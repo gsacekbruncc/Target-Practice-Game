@@ -35,4 +35,9 @@ public class LookCharacter : MonoBehaviour
     {
         lookSpeed = sensitivity;
     }
+    public void SetPitch(float pitch)
+    {
+        this.pitch = pitch;
+    }
+    
 }
