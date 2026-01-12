@@ -551,7 +551,7 @@ public class LevelManager : MonoBehaviour
 
         var position = new Vector3(Random.Range(-10f, 10f), Random.Range(target.transform.localScale.y, 5f), spawnPlane.transform.position.z);
         
-        var newTarget = Instantiate(target, position, Quaternion.identity);
+        var newTarget = Instantiate(target, position, Quaternion.Euler(90f, 0f, 0f));
 
         var dTime = newTarget.AddComponent<DespawnTarget>();
         dTime.liveTime = liveTime;
