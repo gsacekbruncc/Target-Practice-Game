@@ -37,7 +37,7 @@ public class ShootTarget : MonoBehaviour
             if(Physics.SphereCast(ray, bulletRadius, out RaycastHit hit, rayDistance))
             {
                 target = hit.collider.gameObject;
-                Debug.Log(target.name);
+                //`Debug.Log(target.name);
 
                 if(target.CompareTag("Button") || target.CompareTag("Slider") || target.CompareTag("IncrementSensitivity") || target.CompareTag("DecrementSensitivity"))
                 {
@@ -59,7 +59,7 @@ public class ShootTarget : MonoBehaviour
                 }
                 else
                 {
-                    fireSoundSource.PlayOneShot(fireSoundClip, .5f);
+                    fireSoundSource.PlayOneShot(fireSoundClip, .2f);
                     if(target.CompareTag("TutorialTarget"))
                     {
                         playerSoundSource.PlayOneShot(hitSoundClip, .5f);
