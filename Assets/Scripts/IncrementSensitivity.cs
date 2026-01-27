@@ -21,18 +21,19 @@ public class IncrementSensitivity : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+            float sensitivity = GetComponent<Slider>().value;
 
-            if(Physics.Raycast(ray, out var hit))
+            if (Physics.Raycast(ray, out var hit))
             {
                 if(hit.collider.gameObject.CompareTag("IncrementSensitivity"))
                 {
-                    Debug.Log("Right hit");
                     GetComponent<Slider>().value += .01f;
+                    SaveManager.SaveSensitivity(sensitivity + .01f);
                 }
                 if(hit.collider.gameObject.CompareTag("DecrementSensitivity"))
                 {
-                    Debug.Log("Left hit");
                     GetComponent<Slider>().value -= .01f;
+                    SaveManager.SaveSensitivity(sensitivity - .01f);
                 }
             }
         }    

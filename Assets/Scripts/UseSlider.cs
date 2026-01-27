@@ -8,12 +8,14 @@ public class UseSlider : MonoBehaviour
 {
     Camera cam;
     Slider slider;
+    float sliderValue;
 
     // Start is called before the first frame update
     void Start()
     {
         slider = GetComponent<Slider>();
         cam = Camera.main;
+        slider.onValueChanged.AddListener(OnSliderValueChanged);
     }
 
     // Update is called once per frame
@@ -28,14 +30,36 @@ public class UseSlider : MonoBehaviour
                 var hitSlider = hit.collider.GetComponent<Slider>();
                 if(hitSlider == slider)
                 {
-                    
                     RectTransform rt = slider.GetComponent<RectTransform>();
                     Vector2 lp = rt.InverseTransformPoint(hit.point);
 
                     float t = Mathf.InverseLerp(rt.rect.xMin, rt.rect.xMax, lp.x);
                     slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, t);
+                    
+                    sliderValue = slider.value;
+                    
                 }
             }
         }    
+    }
+    
+    public void OnSliderValueChanged(float sliderValue)
+    {
+        if(gameObject.name == "Sensitivity")
+        {
+            SaveManager.SaveSensitivity(sliderValue);
+        }
+        if(gameObject.name == "Crosshair Length")
+        {
+            SaveManager.SaveCrosshairLengthSliderValue(sliderValue);
+        }
+        if(gameObject.name == "Crosshair Width")
+        {
+            SaveManager.SaveCrosshairWidthSliderValue(sliderValue);
+        }
+        if(gameObject.name == "Crosshair Spread")
+        {
+            SaveManager.SaveCrosshairSpreadSliderValue(sliderValue);
+        }
     }
 }
