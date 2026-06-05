@@ -47,24 +47,29 @@ public class ApplyCrosshair : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-
-                var st = crosshairScreen[i].rectTransform;
                 var rt = crosshairRep[i].rectTransform;
-
+                var st = crosshairScreen[i].rectTransform;
+        
                 Vector2 rawSize = rt.sizeDelta;
                 Vector2 rawPos = rt.anchoredPosition;
+                Color color = crosshairRep[i].color;
 
                 Vector2 pixelSize = new Vector2(Mathf.Round(rawSize.x), Mathf.Round(rawSize.y));
                 Vector2 pixelPos = new Vector2(Mathf.Round(rawPos.x), Mathf.Round(rawPos.y));
-
+                
                 st.sizeDelta = pixelSize;
                 st.anchoredPosition = pixelPos;
+                crosshairScreen[i].color = color;
 
                 savedSize = pixelSize;
                 savedPos = pixelPos;
 
                 SaveManager.SaveScreenSpaceCrosshairTick("CROSSHAIR_SCREEN_SPACE_SIZE_DELTA_KEY", i, pixelSize);
                 SaveManager.SaveScreenSpaceCrosshairTick("CROSSHAIR_SCREEN_SPACE_ANCHORED_POSITION_KEY", i, pixelPos);
+                
+                SaveManager.SaveCrosshairRedValue((int)(crosshairRep[0].color.r * 255));
+                SaveManager.SaveCrosshairGreenSliderValue((int)(crosshairRep[0].color.g * 255));
+                SaveManager.SaveCrosshairBlueSliderValue((int)(crosshairRep[0].color.b * 255));
             }
             SaveManager.SetSaved();
         }
@@ -78,9 +83,12 @@ public class ApplyCrosshair : MonoBehaviour
                 Vector2 pixelSize = SaveManager.GetScreenSpaceCrosshairSizeDelta(i);
                 Vector2 pixelPos = SaveManager.GetScreenSpaceCrosshairAnchoredPosition(i);
 
+                Color32 color = new Color32((byte)SaveManager.GetCrosshairRed(), (byte)SaveManager.GetCrosshairGreen(), (byte)SaveManager.GetCrosshairBlue(), 255);
+                
                 var st = crosshairScreen[i].rectTransform;
                 st.sizeDelta = pixelSize;
                 st.anchoredPosition = pixelPos;
+                crosshairScreen[i].color = color;
             }
 
         }

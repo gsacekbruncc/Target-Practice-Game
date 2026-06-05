@@ -10,6 +10,9 @@ public class SaveSetting : MonoBehaviour
     public GameObject crosshairLength;
     public GameObject crosshairWidth;
     public GameObject crosshairSpread;
+    public GameObject crosshairRed;
+    public GameObject crosshairGreen;
+    public GameObject crosshairBlue;
     public GameObject settingsParent;
 
     bool saved;
@@ -26,14 +29,24 @@ public class SaveSetting : MonoBehaviour
         if(saved == false)
         {
             Slider sensitivitySlider = sensitivity.GetComponent<Slider>();
+            
             Slider crosshairLengthSlider = crosshairLength.GetComponent<Slider>();
             Slider crosshairWidthSlider = crosshairWidth.GetComponent<Slider>();
             Slider crosshairSpreadSlider = crosshairSpread.GetComponent<Slider>();
+            
+            Slider crosshairRedSlider = crosshairRed.GetComponent<Slider>();
+            Slider crosshairGreenSlider = crosshairGreen.GetComponent<Slider>();
+            Slider crosshairBlueSlider = crosshairBlue.GetComponent<Slider>();
 
             sensitivitySlider.value = SaveManager.GetSensitivity();
+            
             crosshairLengthSlider.value = SaveManager.GetCrosshairLength();
             crosshairWidthSlider.value = SaveManager.GetCrosshairWidth();
             crosshairSpreadSlider.value = SaveManager.GetCrosshairSpread();
+            
+            crosshairRedSlider.value = SaveManager.GetCrosshairRed();
+            crosshairGreenSlider.value = SaveManager.GetCrosshairGreen();
+            crosshairBlueSlider.value = SaveManager.GetCrosshairBlue();
 
             settingsParent.gameObject.SetActive(false);
             saved = true;

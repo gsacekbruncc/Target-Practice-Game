@@ -8,9 +8,9 @@ public class LevelManager : MonoBehaviour
     
     //public float targetValue;
     public GameObject startTarget;
-    public GameObject target;
     public GameObject results;
     public GameObject lava;
+    public GameObject[] targets;
     public GameObject[] tutorialTargets;
     public GameObject[] levelText;
     public GameObject[] platforms;
@@ -585,10 +585,24 @@ public class LevelManager : MonoBehaviour
 
     public void Spawn()
     {
-
-        var position = new Vector3(Random.Range(-10f, 10f), Random.Range(target.transform.localScale.y, 5f), spawnPlane.transform.position.z);
+        GameObject currTarget;
         
-        var newTarget = Instantiate(target, position, Quaternion.Euler(90f, 0f, 0f));
+        if(inHard)
+        {
+            currTarget = targets[2];
+        }
+        else if(inMedium)
+        {
+            currTarget = targets[1];
+        }
+        else
+        {
+            currTarget = targets[0];
+        }
+        
+        var position = new Vector3(Random.Range(-10f, 10f), Random.Range(currTarget.transform.localScale.y, 5f), spawnPlane.transform.position.z);
+        
+        var newTarget = Instantiate(currTarget, position, Quaternion.Euler(90f, 0f, 0f));
 
         if(roundTime != 0 && inBlitz)
         {

@@ -6,11 +6,18 @@ public static class SaveManager
 {
     const string UNLOCKED_LEVEL_KEY = "UnlockedLevel";
     const string SENSITIVITY_SLIDER_VALUE_KEY = "SensitivitySliderValue";
+    
     const string CROSSHAIR_LENGTH_SLIDER_VALUE_KEY = "CrosshairLengthSliderValue";
     const string CROSSHAIR_WIDTH_SLIDER_VALUE_KEY = "CrosshairWidthSliderValue";
     const string CROSSHAIR_SPREAD_SLIDER_VALUE_KEY = "CrosshairSpreadSliderValue";
+    
     const string CROSSHAIR_SCREEN_SPACE_SIZE_DELTA_KEY = "CrosshairScreenSpaceSizeDelta";
     const string CROSSHAIR_SCREEN_SPACE_ANCHORED_POSITION_KEY = "CrosshairScreenSpaceAnchoredPosition";
+    
+    const string CROSSHAIR_RED_SLIDER_VALUE_KEY = "CrosshairRedSliderValueKey";
+    const string CROSSHAIR_GREEN_SLIDER_VALUE_KEY = "CrosshairGreenSliderValueKey";
+    const string CROSSHAIR_BLUE_SLIDER_VALUE_KEY = "CrosshairBlueSliderValueKey";
+    
     const string CROSSHAIR_SAVED_KEY = "CrosshairSaved";
 
 
@@ -75,6 +82,18 @@ public static class SaveManager
     {
         PlayerPrefs.SetFloat(CROSSHAIR_SPREAD_SLIDER_VALUE_KEY, spread);
     }
+    public static void SaveCrosshairRedValue(int red)
+    {
+        PlayerPrefs.SetInt(CROSSHAIR_RED_SLIDER_VALUE_KEY, red);
+    }
+    public static void SaveCrosshairGreenSliderValue(int green)
+    {
+        PlayerPrefs.SetInt(CROSSHAIR_GREEN_SLIDER_VALUE_KEY, green);
+    }
+    public static void SaveCrosshairBlueSliderValue(int blue)
+    {
+        PlayerPrefs.SetInt(CROSSHAIR_BLUE_SLIDER_VALUE_KEY, blue);
+    }
     //public static void SaveScreenSpaceCrosshair(Vector2 sizeDelta, Vector2 anchoredPosition)
     //{
     //    PlayerPrefs.SetFloat(CROSSHAIR_SCREEN_SPACE_SIZE_DELTA_KEY + "_1_X", sizeDelta.x);
@@ -135,6 +154,18 @@ public static class SaveManager
         float y = PlayerPrefs.GetFloat($"CROSSHAIR_SCREEN_SPACE_ANCHORED_POSITION_KEY_{i}_y");
 
         return new Vector2(x, y);
+    }
+    public static int GetCrosshairRed()
+    {
+        return PlayerPrefs.GetInt(CROSSHAIR_RED_SLIDER_VALUE_KEY);
+    }
+    public static int GetCrosshairGreen()
+    {
+        return PlayerPrefs.GetInt(CROSSHAIR_GREEN_SLIDER_VALUE_KEY);
+    }
+    public static int GetCrosshairBlue()
+    {
+        return PlayerPrefs.GetInt(CROSSHAIR_BLUE_SLIDER_VALUE_KEY);
     }
     public static bool GetSaved()
     {
