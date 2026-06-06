@@ -23,6 +23,11 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        PlayerPrefs.SetInt("UnlockedLevel", 4);
+        PlayerPrefs.Save();
+
+
         cam = Camera.main;
         player = GameObject.Find("Player");
     }
@@ -44,8 +49,13 @@ public class MenuManager : MonoBehaviour
                 {
                     currSubMenu.SetActive(true);
                 }
+                //Close meny if Blitz button was pressed and Blitz mode is unlocked
+                else if(currId == 4 && SaveManager.IsLevelUnlockedString("Blitz"))
+                {
+                    buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(false);
+                }
                 //Close menu if different button was pressed
-                else if(buttons[0].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
+                else if(currId != 4 && buttons[0].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
                 {
                     buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
@@ -69,7 +79,7 @@ public class MenuManager : MonoBehaviour
                     #endif
                 }
                 //Clicked Blitz Button
-                if(currId == 4)
+                if(currId == 4 && SaveManager.IsLevelUnlockedString("Blitz"))
                 {
                     currSubMenu.SetActive(true);
                 }

@@ -64,6 +64,7 @@ public class ShootPlayer : MonoBehaviour
             {
                 if(hit.collider.gameObject.name == "Player")
                 {
+                    
                     source.Play();
                     source.time = .2f;
 

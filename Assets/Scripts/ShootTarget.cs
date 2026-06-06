@@ -22,8 +22,11 @@ public class ShootTarget : MonoBehaviour
     void Start()
     {
         fireSoundSource = GameObject.Find("AK 47").GetComponent<AudioSource>();
+        fireSoundSource.clip = Resources.Load<AudioClip>("AK47");
+        fireSoundSource.volume = .2f;
         playerSoundSource = GameObject.Find("Player").GetComponent<AudioSource>();
         gameHandler = GameObject.Find("Game Handler");
+        
     }
 
     // Update is called once per frame
@@ -60,7 +63,9 @@ public class ShootTarget : MonoBehaviour
                 }
                 else
                 {
-                    fireSoundSource.PlayOneShot(fireSoundClip, .2f);
+                    
+                    fireSoundSource.Play();
+                    fireSoundSource.time = .05f;
                     if(target.CompareTag("TutorialTarget"))
                     {
                         playerSoundSource.PlayOneShot(hitSoundClip, .5f);
