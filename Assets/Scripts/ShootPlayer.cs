@@ -8,18 +8,25 @@ public class ShootPlayer : MonoBehaviour
     public AudioClip gameOver;
 
     bool laserSpawned;
+    GameObject gameHandler;
     GameObject player;
     GameObject laserPrefab;
     GameObject newLaser;
     AudioSource source;
+    AudioClip deathAudio;
+    SetCameraPosition SetCameraPosition;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        gameHandler = GameObject.Find("Game Handler");
+        SetCameraPosition = gameHandler.GetComponent<SetCameraPosition>();
         player = GameObject.Find("Player");
         laserPrefab = GameObject.Find("Laser");
         source = player.GetComponent<AudioSource>();
+        source.clip = Resources.Load<AudioClip>("Death");
+        
     }
 
     // Update is called once per frame
@@ -57,6 +64,11 @@ public class ShootPlayer : MonoBehaviour
             {
                 if(hit.collider.gameObject.name == "Player")
                 {
+                    source.Play();
+                    source.time = .2f;
+
+                    SetCameraPosition.ResetCamera();
+                    
                     var gameHandler = GameObject.Find("Game Handler");
                     gameHandler.GetComponent<LevelManager>().SetInRound(false);
                 }

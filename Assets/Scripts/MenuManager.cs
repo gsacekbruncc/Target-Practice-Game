@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    Camera cam;
     GameObject button;
     GameObject player;
     Color locked = new Color(118, 118, 118);
@@ -13,8 +14,8 @@ public class MenuManager : MonoBehaviour
     
     public GameObject[] buttons;
     public GameObject[] gameModes;
-    public GameObject quitButton;
-    Camera cam;
+    public GameObject blitzMenu;
+    
     
     
 
@@ -38,15 +39,17 @@ public class MenuManager : MonoBehaviour
                 GameObject currSubMenu = currButton.GetComponent<ButtonInfo>().subMenu;
                 int currId = currButton.GetComponent<ButtonInfo>().id;
                 
+                //Clicked Play Button
                 if(currId == 1)
                 {
                     currSubMenu.SetActive(true);
                 }
+                //Close menu if different button was pressed
                 else if(buttons[0].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
                 {
                     buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
-
+                //Clicked Settings Button
                 if(currId == 2)
                 {
                     currSubMenu.SetActive(true);
@@ -55,10 +58,24 @@ public class MenuManager : MonoBehaviour
                 {
                     buttons[1].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
-
+                //Clicked Quit Button
                 if(currId == 3)
                 {
-                    Application.Quit();
+                    #if UNITY_STANDALONE
+                        Application.Quit();
+                    #endif
+                    #if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+                    #endif
+                }
+                //Clicked Blitz Button
+                if(currId == 4)
+                {
+                    currSubMenu.SetActive(true);
+                }
+                else if(buttons[3].GetComponent<ButtonInfo>().subMenu.activeInHierarchy)
+                {
+                    buttons[3].GetComponent<ButtonInfo>().subMenu.SetActive(false);
                 }
             }
             if(gameModes.Contains(target))
@@ -93,17 +110,22 @@ public class MenuManager : MonoBehaviour
                 }
                 if(modeButton == gameModes[5] && SaveManager.IsLevelUnlocked(4))
                 {
-                    GetComponent<LevelManager>().StartBlitz();
+                    blitzMenu.SetActive(false);
+                    buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(true);
+                    GetComponent<LevelManager>().StartBlitzEasy();
                 }
-            }
-            if(target == quitButton)
-            {   
-                #if UNITY_STANDALONE
-                    Application.Quit();
-                #endif
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #endif
+                if(modeButton == gameModes[6] && SaveManager.IsLevelUnlocked(4))
+                {
+                    blitzMenu.SetActive(false);
+                    buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(true);
+                    GetComponent<LevelManager>().StartBlitzMedium();
+                }
+                if(modeButton == gameModes[7] && SaveManager.IsLevelUnlocked(4))
+                {
+                    blitzMenu.SetActive(false);
+                    buttons[0].GetComponent<ButtonInfo>().subMenu.SetActive(true);
+                    GetComponent<LevelManager>().StartBlitzHard();
+                }
             }
         }
         if(SaveManager.IsLevelUnlocked(1))
@@ -124,7 +146,8 @@ public class MenuManager : MonoBehaviour
         }
         if(SaveManager.IsLevelUnlocked(4))
         {
-            gameModes[5].GetComponent<Image>().color = unlocked;
+            buttons[3].GetComponent<Image>().color = unlocked;
         }
+        
     }
 }

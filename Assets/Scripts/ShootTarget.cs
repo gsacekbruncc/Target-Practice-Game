@@ -9,7 +9,8 @@ public class ShootTarget : MonoBehaviour
     public AudioClip hitSoundClip;
     public AudioClip clickSoundClip;
     public AudioClip lockedSoundClip;
-    
+    public GameObject startTarget;
+
     float rayDistance = 100;
     float bulletRadius = .05f;
     GameObject target;
@@ -37,11 +38,11 @@ public class ShootTarget : MonoBehaviour
             if(Physics.SphereCast(ray, bulletRadius, out RaycastHit hit, rayDistance))
             {
                 target = hit.collider.gameObject;
-                //`Debug.Log(target.name);
+                //Debug.Log(target.name);
 
                 if(target.CompareTag("Button") || target.CompareTag("Slider") || target.CompareTag("IncrementSensitivity") || target.CompareTag("DecrementSensitivity"))
                 {
-                    if(target.transform.parent.name == "Game Modes")
+                    if(target.transform.parent.name == "Game Modes" || target.transform.parent.name == "Blitz Menu")
                     {
                         if(SaveManager.IsLevelUnlockedString(target.name))
                         {
@@ -52,7 +53,7 @@ public class ShootTarget : MonoBehaviour
                             playerSoundSource.PlayOneShot(lockedSoundClip, .2f);
                         }
                     }
-                    else if(!target.CompareTag("Slider"))
+                    else if(!target.CompareTag("Slider") || target.name == "Blitz")
                     {
                         playerSoundSource.PlayOneShot(clickSoundClip, .1f);
                     }
@@ -63,6 +64,7 @@ public class ShootTarget : MonoBehaviour
                     if(target.CompareTag("TutorialTarget"))
                     {
                         playerSoundSource.PlayOneShot(hitSoundClip, .5f);
+                        startTarget.SetActive(false);
                         target.SetActive(false);
                     }
                     if(target.CompareTag("Target"))

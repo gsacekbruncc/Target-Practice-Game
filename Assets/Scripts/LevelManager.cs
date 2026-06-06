@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     
     //public float targetValue;
     public GameObject startTarget;
+    public GameObject[] startTargets;
     public GameObject results;
     public GameObject lava;
     public GameObject[] targets;
@@ -22,6 +23,7 @@ public class LevelManager : MonoBehaviour
     MoveTarget moveTarget;
     ShootPlayer shootPlayer;
     AudioSource playerAudio;
+    SetCameraPosition SetCameraPosition;
     bool inRound;
     bool inTutorial;
     bool inEasy;
@@ -29,7 +31,9 @@ public class LevelManager : MonoBehaviour
     bool inHard;
     bool inChallenge;
     bool inFreePlay;
-    bool inBlitz;
+    bool inBlitzEasy;
+    bool inBlitzMedium;
+    bool inBlitzHard;
     int targetsSpawned;
     int tutorialStage;
     int targetType;
@@ -62,6 +66,7 @@ public class LevelManager : MonoBehaviour
         shootPlayer = GetComponent<ShootPlayer>();
         roundTime += startDelay;
         spawnPlane = GameObject.Find("Spawn Plane");
+        SetCameraPosition = GetComponent<SetCameraPosition>();
     }
 
     // Update is called once per frame
@@ -149,6 +154,7 @@ public class LevelManager : MonoBehaviour
             && tutorialTargets[5].activeInHierarchy == false
             && tutorialTargets[6].activeInHierarchy == false)
             {
+                SetCameraPosition.ResetCamera();
                 SaveManager.UnlockNextLevel(0);
                 playerAudio.PlayOneShot(winAudio, 1f);
                 inTutorial = false;
@@ -182,18 +188,19 @@ public class LevelManager : MonoBehaviour
                     inRound = false;
                     if(level != "3")
                     {
-                        
                         startTarget.SetActive(true);
+                        startTargets[0].SetActive(true);
                     }
                     if(level == "3")
                     {
+                        SetCameraPosition.ResetCamera();
                         SaveManager.UnlockNextLevel(1);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inEasy = false;
                     }
                 } 
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "0")
             {   
                 levelText[0].SetActive(false);
                 levelText[5].SetActive(true);
@@ -207,7 +214,7 @@ public class LevelManager : MonoBehaviour
 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "1")
             {   
                 levelText[5].SetActive(false);
                 levelText[6].SetActive(true);
@@ -225,7 +232,7 @@ public class LevelManager : MonoBehaviour
                 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "2")
             {   
                 tTTH = 0;
                 score = 0;
@@ -271,16 +278,18 @@ public class LevelManager : MonoBehaviour
                     if(level != "3")
                     {
                         startTarget.SetActive(true);
+                        startTargets[1].SetActive(true);
                     }
                     if(level == "3")
                     {
+                        SetCameraPosition.ResetCamera();
                         SaveManager.UnlockNextLevel(2);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inMedium = false;
                     }
                 } 
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "0")
             {   
                 levelText[1].SetActive(false);
                 levelText[5].SetActive(true);
@@ -296,7 +305,7 @@ public class LevelManager : MonoBehaviour
 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "1")
             {   
                 levelText[5].SetActive(false);
                 levelText[6].SetActive(true);
@@ -316,7 +325,7 @@ public class LevelManager : MonoBehaviour
                 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "2")
             {   
                 tTTH = 0;
                 score = 0;
@@ -364,16 +373,18 @@ public class LevelManager : MonoBehaviour
                     if(level != "3")
                     {
                         startTarget.SetActive(true);
+                        startTargets[2].SetActive(true);
                     }
                     if(level == "3")
                     {
+                        SetCameraPosition.ResetCamera();
                         SaveManager.UnlockNextLevel(3);
                         playerAudio.PlayOneShot(winAudio, 1f);
                         inHard = false;
                     }
                 } 
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "0")
             {   
                 levelText[2].SetActive(false);
                 levelText[5].SetActive(true);
@@ -390,7 +401,7 @@ public class LevelManager : MonoBehaviour
 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            if(!inRound && startTarget.activeInHierarchy == false && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "1")
             {   
                 levelText[5].SetActive(false);
                 levelText[6].SetActive(true);
@@ -411,7 +422,7 @@ public class LevelManager : MonoBehaviour
                 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[1].activeInHierarchy == false && level == "2")
             {   
                 tTTH = 0;
                 score = 0;
@@ -460,16 +471,18 @@ public class LevelManager : MonoBehaviour
                     if(level != "3")
                     {
                         startTarget.SetActive(true);
+                        startTargets[0].SetActive(true);
                     }
                     if(level == "3")
                     {
+                        SetCameraPosition.ResetCamera();
                         SaveManager.UnlockNextLevel(4);
                         playerAudio.PlayOneShot(winAudio, 1f);
-                        inHard = false;
+                        inChallenge = false;
                     }
                 } 
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "0")
             {   
                 levelText[3].SetActive(false);
                 levelText[5].SetActive(true);
@@ -488,7 +501,7 @@ public class LevelManager : MonoBehaviour
 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "1")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "1")
             {   
                 levelText[5].SetActive(false);
                 levelText[6].SetActive(true);
@@ -509,7 +522,7 @@ public class LevelManager : MonoBehaviour
                 
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "2")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && level == "2")
             {   
                 tTTH = 0;
                 score = 0;
@@ -530,7 +543,7 @@ public class LevelManager : MonoBehaviour
                 InvokeRepeating(nameof(Spawn), 0f, interval);
             }
         }
-        if(inBlitz)
+        if(inBlitzEasy || inBlitzMedium || inBlitzHard)
         {   
             if(inRound)
             {
@@ -556,11 +569,16 @@ public class LevelManager : MonoBehaviour
                     
                     inRound = false;
 
+                    inBlitzEasy = false;
+                    inBlitzMedium = false;
+                    inBlitzHard = false;
+
+                    SetCameraPosition.ResetCamera();
                     playerAudio.PlayOneShot(winAudio, 1f);
-                    inBlitz = false;
+                    
                 } 
             }
-            if(!inRound && startTarget.activeInHierarchy == false && level == "0")
+            if(!inRound && startTarget.activeInHierarchy == false && startTargets[0].activeInHierarchy == false && startTargets[1].activeInHierarchy == false && startTargets[2].activeInHierarchy == false && level == "0")
             {   
                 tTTH = 0;
                 score = 0;
@@ -587,11 +605,11 @@ public class LevelManager : MonoBehaviour
     {
         GameObject currTarget;
         
-        if(inHard)
+        if(inHard || inBlitzHard)
         {
             currTarget = targets[2];
         }
-        else if(inMedium)
+        else if(inMedium || inBlitzMedium)
         {
             currTarget = targets[1];
         }
@@ -604,7 +622,7 @@ public class LevelManager : MonoBehaviour
         
         var newTarget = Instantiate(currTarget, position, Quaternion.Euler(90f, 0f, 0f));
 
-        if(roundTime != 0 && inBlitz)
+        if(roundTime != 0 && (inBlitzEasy || inBlitzMedium || inBlitzHard))
         {
             newTarget.GetComponent<TargetInfo>().SetBlitzTarget(true);
             liveTargets.Add(newTarget);
@@ -682,6 +700,16 @@ public class LevelManager : MonoBehaviour
     
     public void CancelGameMode()
     {   
+        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
+        startTargets[0].GetComponent<TargetInfo>().SetBlitzTarget(false);
+        startTargets[1].GetComponent<TargetInfo>().SetBlitzTarget(false);
+        startTargets[2].GetComponent<TargetInfo>().SetBlitzTarget(false);
+        
+        startTarget.SetActive(false);
+        startTargets[0].SetActive(false);
+        startTargets[1].SetActive(false);
+        startTargets[2].SetActive(false);
+
         CancelInvoke(nameof(Spawn));
         foreach(GameObject target in liveTargets)
         {
@@ -702,7 +730,9 @@ public class LevelManager : MonoBehaviour
         inMedium = false;
         inHard = false;
         inChallenge = false;
-        inBlitz = false;
+        inBlitzEasy = false;
+        inBlitzMedium = false;
+        inBlitzHard = false;
     }
 
     public void RemoveLiveTarget(GameObject target)
@@ -741,7 +771,7 @@ public class LevelManager : MonoBehaviour
     }
     public bool GetInBlitz()
     {
-        return inBlitz;
+        return (inBlitzEasy || inBlitzMedium || inBlitzHard);
     }
     public bool GetInRound()
     {
@@ -760,8 +790,6 @@ public class LevelManager : MonoBehaviour
         mode = "Tutorial";
         inRound = false;
         inTutorial = true;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
-        startTarget.SetActive(false);
         results.SetActive(false);
         
     }
@@ -777,8 +805,8 @@ public class LevelManager : MonoBehaviour
         inRound = false;
         inEasy = true;
         targetsSpawned = 0;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
         startTarget.SetActive(true);
+        startTargets[0].SetActive(true);
         levelText[0].SetActive(true);
         results.SetActive(false);
     }
@@ -794,8 +822,8 @@ public class LevelManager : MonoBehaviour
         inRound = false;
         inMedium = true;
         targetsSpawned = 0;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
         startTarget.SetActive(true);
+        startTargets[1].SetActive(true);
         levelText[1].SetActive(true);
         results.SetActive(false);
     }
@@ -812,8 +840,8 @@ public class LevelManager : MonoBehaviour
         inRound = false;
         inHard = true;
         targetsSpawned = 0;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
         startTarget.SetActive(true);
+        startTargets[2].SetActive(true);
         levelText[2].SetActive(true);
         results.SetActive(false);
     }
@@ -830,8 +858,8 @@ public class LevelManager : MonoBehaviour
         inRound = false;
         inChallenge = true;
         targetsSpawned = 0;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(false);
         startTarget.SetActive(true);
+        startTargets[0].SetActive(true);
         levelText[3].SetActive(true);
         results.SetActive(false);
         foreach(GameObject platform in platforms)
@@ -848,7 +876,7 @@ public class LevelManager : MonoBehaviour
         inRound = true;
         inFreePlay = true;
     }
-    public void StartBlitz()
+    public void StartBlitzEasy()
     {
         CancelGameMode();
         shootTime = 0;
@@ -857,13 +885,52 @@ public class LevelManager : MonoBehaviour
         score = 0;
         targetsHit = 0;
         shotsFired = 0;
-        mode = "Blitz";
+        mode = " Blitz Easy";
         inRound = false;
-        inBlitz = true;
+        inBlitzEasy = true;
         targetsSpawned = 0;
-        startTarget.GetComponent<TargetInfo>().SetBlitzTarget(true);
         startTarget.SetActive(true);
-        levelText[4].SetActive(true);
+        startTargets[0].GetComponent<TargetInfo>().SetBlitzTarget(true);
+        startTargets[0].SetActive(true);
+        levelText[0].SetActive(true);
+        results.SetActive(false);
+    }
+    public void StartBlitzMedium()
+    {
+        CancelGameMode();
+        shootTime = 0;
+        level = "0";
+        tTTH = 0;
+        score = 0;
+        targetsHit = 0;
+        shotsFired = 0;
+        mode = "   Blitz Medium";
+        inRound = false;
+        inBlitzMedium = true;
+        targetsSpawned = 0;
+        startTarget.SetActive(true);
+        startTargets[1].GetComponent<TargetInfo>().SetBlitzTarget(true);
+        startTargets[1].SetActive(true);
+        levelText[1].SetActive(true);
+        results.SetActive(false);
+    }
+    public void StartBlitzHard()
+    {
+        CancelGameMode();
+        shootTime = 0;
+        level = "0";
+        tTTH = 0;
+        score = 0;
+        targetsHit = 0;
+        shotsFired = 0;
+        mode = " Blitz Hard";
+        inRound = false;
+        inBlitzHard = true;
+        targetsSpawned = 0;
+        startTarget.SetActive(true);
+        startTargets[2].GetComponent<TargetInfo>().SetBlitzTarget(true);
+        startTargets[2].SetActive(true);
+        levelText[2].SetActive(true);
         results.SetActive(false);
     }
     // void StartRound()

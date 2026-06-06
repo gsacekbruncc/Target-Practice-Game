@@ -56,7 +56,7 @@ public static class SaveManager
         {
             return 3 <= unlocked;
         }
-        if(level == "Challenge" || level == "Blitz")
+        if(level == "Challenge" || level == "Blitz" || level == "Blitz Easy" || level == "Blitz Medium" || level == "Blitz Hard")
         {
             return 4 <= unlocked;
         }
